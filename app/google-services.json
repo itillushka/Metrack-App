@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "329980987626",
+    "project_id": "metrack-app-d3ffd",
+    "storage_bucket": "metrack-app-d3ffd.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:329980987626:android:5d929e1c95e7638915af93",
+        "android_client_info": {
+          "package_name": "com.example.metrack"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBSo9EXITlN5vO8w61a93A7jGuvTe3rv4s"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">Metrack</string>
+    <string name="register">Register</string>
+    <string name="don_t_have_an_account">Don`t have an account?</string>
+    <string name="password">password</string>
+    <string name="email">email</string>
+    <string name="login">Login</string>
+    <string name="default_web_client_id">329980987626-4doj2q7pr7t3gjs5bmfpe65bkplbc37r.apps.googleusercontent.com</string>
+</resources>
