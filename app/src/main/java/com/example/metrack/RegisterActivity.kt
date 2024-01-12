@@ -21,7 +21,6 @@ import com.google.firebase.auth.GoogleAuthProvider
 
 class RegisterActivity : SnackActivity() {
     private lateinit var auth: FirebaseAuth
-    private lateinit var googleSignInClient: GoogleSignInClient
 
     private var inputName: EditText? = null
     private var inputEmail: EditText? = null
@@ -51,55 +50,8 @@ class RegisterActivity : SnackActivity() {
             }
         }
 
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
-
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
-
-        val signInButton = findViewById<SignInButton>(R.id.sign_in_button_register)
-        signInButton.setOnClickListener {
-            signIn()
-        }
     }
 
-    private fun signIn() {
-        val signInIntent = googleSignInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == RC_SIGN_IN) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                val account = task.getResult(ApiException::class.java)!!
-                firebaseAuthWithGoogle(account)
-            } catch (e: ApiException) {
-                // Handle sign-in error
-            }
-        }
-    }
-
-    private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
-        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Registration success, add user to Firestore and navigate to MainActivity
-                    val fireStoreClass = FireStoreClass()
-                    val user = User(auth.currentUser!!.uid, account.displayName!!, account.email!!)
-                    fireStoreClass.registerUserFS(this, user)
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                } else {
-                    // Registration failure
-                }
-            }
-    }
 
     private fun validateRegisterDetails(): Boolean {
         val password: String = inputPassword?.text.toString().trim { it <= ' ' }
@@ -178,7 +130,4 @@ class RegisterActivity : SnackActivity() {
         finish()
     }
 
-    companion object {
-        private const val RC_SIGN_IN = 9001
-    }
 }

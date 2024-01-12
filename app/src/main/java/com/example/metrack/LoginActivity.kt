@@ -23,7 +23,7 @@ class LoginActivity : SnackActivity(), View.OnClickListener {
     private var inputEmail: EditText? = null
     private var inputPassword: EditText? = null
     private var loginButton: Button? = null
-    private lateinit var googleSignInClient: GoogleSignInClient
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -39,57 +39,11 @@ class LoginActivity : SnackActivity(), View.OnClickListener {
             logInRegisteredUser()
         }
 
-        val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
-            .requestIdToken(getString(R.string.default_web_client_id))
-            .requestEmail()
-            .build()
 
-        googleSignInClient = GoogleSignIn.getClient(this, gso)
-
-        val signInButton = findViewById<SignInButton>(R.id.sign_in_button)
-        signInButton.setOnClickListener {
-            signIn()
-        }
     }
 
 
-    private fun signIn() {
-        val signInIntent = googleSignInClient.signInIntent
-        startActivityForResult(signInIntent, RC_SIGN_IN)
-    }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        super.onActivityResult(requestCode, resultCode, data)
-
-        if (requestCode == RC_SIGN_IN) {
-            val task = GoogleSignIn.getSignedInAccountFromIntent(data)
-            try {
-                val account = task.getResult(ApiException::class.java)!!
-                firebaseAuthWithGoogle(account)
-            } catch (e: ApiException) {
-                // Handle sign-in error
-            }
-        }
-    }
-
-    private fun firebaseAuthWithGoogle(account: GoogleSignInAccount) {
-        val credential = GoogleAuthProvider.getCredential(account.idToken, null)
-        auth.signInWithCredential(credential)
-            .addOnCompleteListener(this) { task ->
-                if (task.isSuccessful) {
-                    // Sign-in success
-                    val intent = Intent(this, MainActivity::class.java)
-                    startActivity(intent)
-                    finish()
-                } else {
-                    // Sign-in failure
-                }
-            }
-    }
-
-    companion object {
-        private const val RC_SIGN_IN = 9001
-    }
 
 
     override fun onClick(view: View?) {
