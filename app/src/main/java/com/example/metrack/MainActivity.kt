@@ -3,13 +3,20 @@ package com.example.metrack
 import android.app.Dialog
 import android.os.Bundle
 import android.view.LayoutInflater
-import android.widget.ImageView
-import androidx.appcompat.app.AppCompatActivity
+import android.view.MenuItem
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
 import androidx.core.view.GravityCompat
 import androidx.drawerlayout.widget.DrawerLayout
+import com.google.android.material.navigation.NavigationView
+import android.widget.ImageView
+import android.widget.Toast
+import android.view.View
+import androidx.appcompat.app.ActionBarDrawerToggle
 
 class MainActivity : AppCompatActivity() {
+
+    lateinit var toggle : ActionBarDrawerToggle
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -17,15 +24,26 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
 
         val bodyView = findViewById<ImageView>(R.id.bodyView)
-        val userView = findViewById<ImageView>(R.id.userView)
-        val drawerLayout = findViewById<DrawerLayout>(R.id.drawer_layout)
+        val drawerLayout = findViewById<DrawerLayout>(R.id.drawerlayout)
+        val navView = findViewById<NavigationView>(R.id.nav_view)
 
+        toggle = ActionBarDrawerToggle(this, drawerLayout, R.string.open, R.string.close)
+        drawerLayout.addDrawerListener(toggle)
+        toggle.syncState()
 
-        userView.setOnClickListener {
-            if (!drawerLayout.isDrawerOpen(GravityCompat.END)) {
-                drawerLayout.openDrawer(GravityCompat.END)
+        supportActionBar?.setDisplayHomeAsUpEnabled(true)
+
+        navView.setNavigationItemSelectedListener {
+
+            when(it.itemId){
+                R.id.nav_recent_documents -> Toast.makeText(applicationContext, "Home", Toast.LENGTH_SHORT).show()
+                R.id.nav_insurance -> Toast.makeText(applicationContext, "Login", Toast.LENGTH_SHORT).show()
+                R.id.nav_prescriptions -> Toast.makeText(applicationContext, "Delete", Toast.LENGTH_SHORT).show()
+                R.id.nav_notification -> Toast.makeText(applicationContext, "Notifications", Toast.LENGTH_SHORT).show()
             }
+            true
         }
+
 
         bodyView.setOnClickListener {
             val dialog = Dialog(this)
@@ -37,5 +55,14 @@ class MainActivity : AppCompatActivity() {
 
             dialog.show()
         }
+
     }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if(toggle.onOptionsItemSelected(item)){
+            return true
+        }
+        return super.onOptionsItemSelected(item)
+    }
+
 }
