@@ -13,17 +13,27 @@ import android.widget.ImageView
 import android.widget.Toast
 import android.view.View
 import androidx.appcompat.app.ActionBarDrawerToggle
+import androidx.navigation.NavController
+import androidx.navigation.fragment.NavHostFragment
+import androidx.navigation.ui.NavigationUI.setupWithNavController
+import com.google.android.material.bottomnavigation.BottomNavigationView
 
 class MainActivity : AppCompatActivity() {
 
     lateinit var toggle : ActionBarDrawerToggle
+    private lateinit var navController: NavController
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         setContentView(R.layout.activity_main)
 
-        val bodyView = findViewById<ImageView>(R.id.bodyView)
+        val navHostFragment = supportFragmentManager.findFragmentById(R.id.mainContainer) as NavHostFragment
+        navController = navHostFragment.navController
+        val bottomNavigationView = findViewById<BottomNavigationView>(R.id.bottomNavView)
+        setupWithNavController(bottomNavigationView, navController)
+
+        //val bodyView = findViewById<ImageView>(R.id.bodyView)
         val drawerLayout = findViewById<DrawerLayout>(R.id.drawerlayout)
         val navView = findViewById<NavigationView>(R.id.nav_view)
 
@@ -45,7 +55,7 @@ class MainActivity : AppCompatActivity() {
         }
 
 
-        bodyView.setOnClickListener {
+        """bodyView.setOnClickListener {
             val dialog = Dialog(this)
             val view = LayoutInflater.from(this).inflate(R.layout.pop_up_body, null)
             dialog.setContentView(view)
@@ -54,7 +64,7 @@ class MainActivity : AppCompatActivity() {
             window?.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
 
             dialog.show()
-        }
+        }"""
 
     }
 
