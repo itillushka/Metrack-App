@@ -1,6 +1,7 @@
 package com.example.metrack
 
 import android.app.Dialog
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.MenuItem
@@ -17,6 +18,7 @@ import androidx.navigation.NavController
 import androidx.navigation.fragment.NavHostFragment
 import androidx.navigation.ui.NavigationUI.setupWithNavController
 import com.google.android.material.bottomnavigation.BottomNavigationView
+import io.scanbot.sdk.ScanbotSDKInitializer
 
 class MainActivity : AppCompatActivity() {
 
@@ -26,7 +28,9 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+
         setContentView(R.layout.activity_main)
+
 
         val navHostFragment = supportFragmentManager.findFragmentById(R.id.mainContainer) as NavHostFragment
         navController = navHostFragment.navController
@@ -46,25 +50,18 @@ class MainActivity : AppCompatActivity() {
         navView.setNavigationItemSelectedListener {
 
             when(it.itemId){
-                R.id.nav_recent_documents -> Toast.makeText(applicationContext, "Home", Toast.LENGTH_SHORT).show()
-                R.id.nav_insurance -> Toast.makeText(applicationContext, "Login", Toast.LENGTH_SHORT).show()
-                R.id.nav_prescriptions -> Toast.makeText(applicationContext, "Delete", Toast.LENGTH_SHORT).show()
-                R.id.nav_notification -> Toast.makeText(applicationContext, "Notifications", Toast.LENGTH_SHORT).show()
+
+                R.id.nav_LogOut -> {
+                    Toast.makeText(applicationContext, "Logging Out", Toast.LENGTH_SHORT).show()
+                    val intent = Intent(this, LoginActivity::class.java)
+                    startActivity(intent)
+                    finish()
+                }
             }
             true
         }
 
 
-        """bodyView.setOnClickListener {
-            val dialog = Dialog(this)
-            val view = LayoutInflater.from(this).inflate(R.layout.pop_up_body, null)
-            dialog.setContentView(view)
-
-            val window = dialog.window
-            window?.setLayout(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
-
-            dialog.show()
-        }"""
 
     }
 

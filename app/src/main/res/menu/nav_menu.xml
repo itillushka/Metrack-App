@@ -4,20 +4,8 @@
     tools:showIn="navigation_view">
 
     <item
-        android:id="@+id/nav_recent_documents"
-        android:icon="@drawable/baseline_home_24"
-        android:title="Recent Documents"/>
-    <item
-        android:id="@+id/nav_insurance"
-        android:icon="@drawable/baseline_app_login_24"
-        android:title="Insurance"/>
-    <item
-        android:id="@+id/nav_prescriptions"
-        android:icon="@drawable/baseline_auto_delete_24"
-        android:title="Prescriptions"/>
-    <item
-        android:title="Notification"
-        android:icon="@drawable/baseline_alarm_24"
-        android:id="@+id/nav_notification"/>
+        android:title="Log Out"
+        android:icon="@drawable/logout_24px"
+        android:id="@+id/nav_LogOut"/>
 
 </menu>

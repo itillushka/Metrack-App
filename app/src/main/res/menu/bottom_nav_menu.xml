@@ -5,24 +5,24 @@
         android:id="@+id/mainFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:icon="@drawable/baseline_home_24"
+        android:icon="@drawable/home_24px"
         android:title="Home" />
     <item
         android:id="@+id/libraryFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:icon="@drawable/baseline_collections_bookmark_24"
+        android:icon="@drawable/library_24px"
         android:title="Library" />
     <item
         android:id="@+id/scanFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:icon="@drawable/baseline_add_a_photo_24"
+        android:icon="@drawable/scan_24px"
         android:title="Scan" />
     <item
         android:id="@+id/prescriptionsFragment"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:icon="@drawable/baseline_drag_indicator_24"
+        android:icon="@drawable/pill_24px"
         android:title="Drugs" />
 </menu>
