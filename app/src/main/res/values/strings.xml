@@ -13,4 +13,5 @@
     <string name="close">Close</string>
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_pdf_file_selected_yet">No PDF File Selected yet !</string>
 </resources>
