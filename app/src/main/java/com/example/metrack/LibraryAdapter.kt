@@ -10,6 +10,8 @@ import com.example.metrack.databinding.EachItemBinding
 class LibraryAdapter(private val listener: PdfClickListener) :
     ListAdapter<PdfFile, LibraryAdapter.PdfFilesViewHolder>(PdfDiffCallback()) {
 
+    private var pdfListFull: List<PdfFile> = listOf()
+
     inner class PdfFilesViewHolder(private val binding: EachItemBinding) :
         RecyclerView.ViewHolder(binding.root) {
 
@@ -39,6 +41,22 @@ class LibraryAdapter(private val listener: PdfClickListener) :
 
     override fun onBindViewHolder(holder: PdfFilesViewHolder, position: Int) {
         holder.bind(getItem(position))
+    }
+
+    fun submitPdfList(list: List<PdfFile>) {
+        pdfListFull = ArrayList(list)
+        super.submitList(list)
+}
+
+    fun filter(query: String) {
+        val filteredList = if (query.isEmpty()) {
+            pdfListFull
+        } else {
+            pdfListFull.filter {
+                it.fileName.contains(query, ignoreCase = true)
+            }
+        }
+        submitList(filteredList)
     }
 
     interface PdfClickListener {

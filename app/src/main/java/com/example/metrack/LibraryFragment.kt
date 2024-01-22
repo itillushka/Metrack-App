@@ -1,6 +1,5 @@
 package com.example.metrack
 
-
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
@@ -37,6 +36,17 @@ class LibraryFragment : Fragment(), LibraryAdapter.PdfClickListener {
         databaseReference = FirebaseDatabase.getInstance("https://metrack-app-d3ffd-default-rtdb.europe-west1.firebasedatabase.app/").reference.child("pdfs")
         initRecyclerView()
         getAllPdfs()
+
+        binding.searchView.setOnQueryTextListener(object : androidx.appcompat.widget.SearchView.OnQueryTextListener {
+            override fun onQueryTextSubmit(query: String?): Boolean {
+                return false
+            }
+
+            override fun onQueryTextChange(newText: String?): Boolean {
+                adapter.filter(newText ?: "")
+                return false
+            }
+        })
     }
 
     private fun getAllPdfs() {
@@ -54,7 +64,7 @@ class LibraryFragment : Fragment(), LibraryAdapter.PdfClickListener {
                 if (tempList.isEmpty())
                     Toast.makeText(requireContext(), "No Data Found", Toast.LENGTH_SHORT)
                         .show()
-                adapter.submitList(tempList)
+                adapter.submitPdfList(tempList)
                 binding.progressBar.visibility = View.GONE
             }
 
