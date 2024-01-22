@@ -1,78 +1,83 @@
 package com.example.metrack
 
+
+import android.content.Intent
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.appcompat.widget.SearchView
 import androidx.fragment.app.Fragment
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.RecyclerView
-import java.util.*
+import androidx.recyclerview.widget.GridLayoutManager
+import com.example.metrack.databinding.FragmentLibraryBinding
+import com.google.firebase.database.DataSnapshot
+import com.google.firebase.database.DatabaseError
+import com.google.firebase.database.DatabaseReference
+import com.google.firebase.database.FirebaseDatabase
+import com.google.firebase.database.ValueEventListener
 
-class LibraryFragment : Fragment() {
-
-    private lateinit var recyclerView: RecyclerView
-    private lateinit var searchView: SearchView
-    private var mList = ArrayList<LibraryData>()
+class LibraryFragment : Fragment(), LibraryAdapter.PdfClickListener {
+    private var _binding: FragmentLibraryBinding? = null
+    private val binding get() = _binding!!
+    private lateinit var databaseReference: DatabaseReference
     private lateinit var adapter: LibraryAdapter
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
         savedInstanceState: Bundle?
-    ): View? {
-        val view = inflater.inflate(R.layout.fragment_library, container, false)
+    ): View {
+        _binding = FragmentLibraryBinding.inflate(inflater, container, false)
+        return binding.root
+    }
 
-        recyclerView = view.findViewById(R.id.recyclerView)
-        searchView = view.findViewById(R.id.searchView)
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
 
-        recyclerView.setHasFixedSize(true)
-        recyclerView.layoutManager = LinearLayoutManager(requireContext())
-        addDataToList()
-        adapter = LibraryAdapter(mList)
-        recyclerView.adapter = adapter
+        databaseReference = FirebaseDatabase.getInstance("https://metrack-app-d3ffd-default-rtdb.europe-west1.firebasedatabase.app/").reference.child("pdfs")
+        initRecyclerView()
+        getAllPdfs()
+    }
 
-        searchView.setOnQueryTextListener(object : SearchView.OnQueryTextListener {
-            override fun onQueryTextSubmit(query: String?): Boolean {
-                return false
+    private fun getAllPdfs() {
+
+        databaseReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+
+                val tempList = mutableListOf<PdfFile>()
+                snapshot.children.forEach {
+                    val pdfFile = it.getValue(PdfFile::class.java)
+                    if (pdfFile != null) {
+                        tempList.add(pdfFile)
+                    }
+                }
+                if (tempList.isEmpty())
+                    Toast.makeText(requireContext(), "No Data Found", Toast.LENGTH_SHORT)
+                        .show()
+                adapter.submitList(tempList)
+                binding.progressBar.visibility = View.GONE
             }
 
-            override fun onQueryTextChange(newText: String?): Boolean {
-                filterList(newText)
-                return true
+            override fun onCancelled(error: DatabaseError) {
+                Toast.makeText(requireContext(), error.message, Toast.LENGTH_SHORT)
+                    .show()
+                binding.progressBar.visibility = View.GONE
             }
 
         })
-
-        return view
     }
 
-    private fun filterList(query: String?) {
-
-        if (query != null) {
-            val filteredList = ArrayList<LibraryData>()
-            for (i in mList) {
-                if (i.title.lowercase(Locale.ROOT).contains(query)) {
-                    filteredList.add(i)
-                }
-            }
-
-            if (filteredList.isEmpty()) {
-                Toast.makeText(requireContext(), "No Data found", Toast.LENGTH_SHORT).show()
-            } else {
-                adapter.setFilteredList(filteredList)
-            }
-        }
+    private fun initRecyclerView() {
+        binding.pdfsRecyclerView.setHasFixedSize(true)
+        binding.pdfsRecyclerView.layoutManager = GridLayoutManager(requireContext(), 1)
+        adapter = LibraryAdapter(this)
+        binding.pdfsRecyclerView.adapter = adapter
     }
 
-    private fun addDataToList() {
-        mList.add(LibraryData("Liver Document", R.drawable.logo))
-        mList.add(LibraryData("Heart Document", R.drawable.logo))
-        mList.add(LibraryData("Veins Document", R.drawable.logo))
-        mList.add(LibraryData("Pancreas Document", R.drawable.logo))
-        mList.add(LibraryData("Brain Document", R.drawable.logo))
-        mList.add(LibraryData("Kidney Document", R.drawable.logo))
-        mList.add(LibraryData("Muscle Document", R.drawable.logo))
+    override fun onPdfClicked(pdfFile: PdfFile) {
+        val intent = Intent(requireContext(), PdfViewerActivity::class.java)
+        intent.putExtra("fileName", pdfFile.fileName)
+        intent.putExtra("downloadUrl", pdfFile.downloadUrl)
+        startActivity(intent)
     }
 }

@@ -1,36 +1,47 @@
 package com.example.metrack
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
-import android.widget.ImageView
-import android.widget.TextView
+import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.example.metrack.databinding.EachItemBinding
 
-class LibraryAdapter(var mList: List<LibraryData>) :
-    RecyclerView.Adapter<LibraryAdapter.LibraryViewHolder>() {
+class LibraryAdapter(private val listener: PdfClickListener) :
+    ListAdapter<PdfFile, LibraryAdapter.PdfFilesViewHolder>(PdfDiffCallback()) {
 
-    inner class LibraryViewHolder(itemView: View) : RecyclerView.ViewHolder(itemView) {
-        val logo : ImageView = itemView.findViewById(R.id.logoIv)
-        val titleTv : TextView = itemView.findViewById(R.id.titleTv)
+    inner class PdfFilesViewHolder(private val binding: EachItemBinding) :
+        RecyclerView.ViewHolder(binding.root) {
+
+        init {
+            binding.root.setOnClickListener {
+                listener.onPdfClicked(getItem(adapterPosition))
+            }
+        }
+
+        fun bind(data: PdfFile) {
+            binding.fileName.text = data.fileName
+        }
     }
 
-    fun setFilteredList(mList: List<LibraryData>){
-        this.mList = mList
-        notifyDataSetChanged()
+    class PdfDiffCallback : DiffUtil.ItemCallback<PdfFile>() {
+        override fun areItemsTheSame(oldItem: PdfFile, newItem: PdfFile) =
+            oldItem.downloadUrl == newItem.downloadUrl
+
+        override fun areContentsTheSame(oldItem: PdfFile, newItem: PdfFile) = oldItem == newItem
+
     }
 
-    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): LibraryViewHolder {
-        val view = LayoutInflater.from(parent.context).inflate(R.layout.each_item , parent , false)
-        return LibraryViewHolder(view)
+    override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): PdfFilesViewHolder {
+        val binding = EachItemBinding.inflate(LayoutInflater.from(parent.context), parent, false)
+        return PdfFilesViewHolder(binding)
     }
 
-    override fun onBindViewHolder(holder: LibraryViewHolder, position: Int) {
-        holder.logo.setImageResource(mList[position].logo)
-        holder.titleTv.text = mList[position].title
+    override fun onBindViewHolder(holder: PdfFilesViewHolder, position: Int) {
+        holder.bind(getItem(position))
     }
 
-    override fun getItemCount(): Int {
-        return mList.size
+    interface PdfClickListener {
+        fun onPdfClicked(pdfFile: PdfFile)
     }
 }

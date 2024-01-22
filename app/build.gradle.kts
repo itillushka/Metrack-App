@@ -73,4 +73,8 @@ dependencies {
     implementation("io.scanbot:sdk-package-1:4.2.0")
     implementation("io.scanbot:sdk-package-ui:4.2.0")
 
+    val lifecycle_version = "2.6.2"
+    implementation ("androidx.lifecycle:lifecycle-runtime-ktx:$lifecycle_version")
+    implementation ("com.github.barteksc:android-pdf-viewer:2.8.2")
+
 }
