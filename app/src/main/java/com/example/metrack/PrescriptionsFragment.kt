@@ -7,12 +7,15 @@ import android.view.ViewGroup
 import androidx.fragment.app.Fragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
+import com.google.firebase.auth.FirebaseAuth
+import com.google.firebase.database.*
 
 class PrescriptionsFragment : Fragment() {
 
     private lateinit var recyclerView: RecyclerView
     private lateinit var mList: MutableList<DataModelPrescriptions>
     private lateinit var adapter: ItemPrescriptionsAdapter
+    private lateinit var databaseReference: DatabaseReference
 
     override fun onCreateView(
         inflater: LayoutInflater, container: ViewGroup?,
@@ -28,26 +31,46 @@ class PrescriptionsFragment : Fragment() {
         recyclerView.setHasFixedSize(true)
         recyclerView.layoutManager = LinearLayoutManager(context)
 
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        databaseReference = FirebaseDatabase.getInstance("https://metrack-app-d3ffd-default-rtdb.europe-west1.firebasedatabase.app/").reference.child("pdfs/$userId")
+
         mList = mutableListOf()
 
-        //list1
-        val nestedList1 = listOf("Jams and Honey", "Pickles and Chutneys", "Readymade Meals", "Chyawanprash and Health Foods", "Pasta and Soups", "Sauces and Ketchup", "Namkeen and Snacks", "Honey and Spreads")
+        getAllPdfs()
+    }
 
-        val nestedList2 = listOf("Book", "Pen", "Office Chair", "Pencil", "Eraser", "NoteBook", "Map", "Office Table")
+    private fun getAllPdfs() {
+        databaseReference.addValueEventListener(object : ValueEventListener {
+            override fun onDataChange(snapshot: DataSnapshot) {
+                val importantList = mutableListOf<String>()
+                val activeList = mutableListOf<String>()
+                val pendingList = mutableListOf<String>()
+                val expiredList = mutableListOf<String>()
 
-        val nestedList3 = listOf("Decorates", "Tea Table", "Wall Paint", "Furniture", "Bedsits", "Certain", "Namkeen and Snacks", "Honey and Spreads")
+                snapshot.children.forEach {
+                    val pdfFile = it.getValue(PdfFile::class.java)
+                    if (pdfFile != null) {
+                        when (pdfFile.category) {
+                            "Important Prescriptions" -> importantList.add(pdfFile.fileName)
+                            "Active Prescriptions" -> activeList.add(pdfFile.fileName)
+                            "Pending Prescriptions" -> pendingList.add(pdfFile.fileName)
+                            "Expired Prescriptions" -> expiredList.add(pdfFile.fileName)
+                        }
+                    }
+                }
 
-        val nestedList4 = listOf("Pasta", "Spices", "Salt", "Chyawanprash", "Maggie", "Sauces and Ketchup", "Snacks", "Kurkure")
+                mList.add(DataModelPrescriptions(importantList, "Important", "@drawable/important_icon"))
+                mList.add(DataModelPrescriptions(activeList, "Active Prescriptions","@drawable/active"))
+                mList.add(DataModelPrescriptions(pendingList, "Pending Prescriptions","@drawable/pending"))
+                mList.add(DataModelPrescriptions(expiredList, "Expired Prescriptions","@drawable/rejected"))
 
+                adapter = ItemPrescriptionsAdapter(mList)
+                recyclerView.adapter = adapter
+            }
 
-        mList.add(DataModelPrescriptions(nestedList1, "Important", "@drawable/important_icon"))
-        mList.add(DataModelPrescriptions(nestedList2, "Active Prescriptions","@drawable/active"))
-        mList.add(DataModelPrescriptions(nestedList3, "Pending Prescriptions","@drawable/pending"))
-        mList.add(DataModelPrescriptions(nestedList4, "Expired Prescriptions","@drawable/rejected"))
-
-
-        adapter = ItemPrescriptionsAdapter(mList)
-        recyclerView.adapter = adapter
+            override fun onCancelled(error: DatabaseError) {
+                // Handle error...
+            }
+        })
     }
 }
-

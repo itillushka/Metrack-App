@@ -12,6 +12,50 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent">
 
+        <RadioGroup
+            android:id="@+id/categoryRadioGroup"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="-10dp"
+            android:layout_marginBottom="400dp"
+            android:orientation="vertical"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="@+id/progressBar">
+
+            <RadioButton
+                android:id="@+id/radioButtonImportant"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Important Prescriptions" />
+
+            <RadioButton
+                android:id="@+id/radioButtonActive"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Active Prescriptions" />
+
+            <RadioButton
+                android:id="@+id/radioButtonPending"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Pending Prescriptions" />
+
+            <RadioButton
+                android:id="@+id/radioButtonExpired"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Expired Prescriptions" />
+
+            <RadioButton
+                android:id="@+id/radioButtonNone"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="None" />
+
+        </RadioGroup>
+
         <com.google.android.material.floatingactionbutton.FloatingActionButton
             android:id="@+id/selectPdfButton"
             android:layout_width="wrap_content"
@@ -77,8 +121,8 @@
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:progress="59"
-            android:visibility="visible"
             android:progressTint="@color/bottom_nav_background"
+            android:visibility="visible"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintHorizontal_bias="0.5"
             app:layout_constraintStart_toStartOf="parent"

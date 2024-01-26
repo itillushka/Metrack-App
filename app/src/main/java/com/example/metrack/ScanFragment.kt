@@ -6,6 +6,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.RadioButton
 import android.widget.Toast
 import androidx.activity.result.contract.ActivityResultContracts
 import androidx.documentfile.provider.DocumentFile
@@ -43,6 +44,9 @@ class ScanFragment : Fragment() {
         storageReference = FirebaseStorage.getInstance().reference.child("pdfs/$userId")
         databaseReference = FirebaseDatabase.getInstance("https://metrack-app-d3ffd-default-rtdb.europe-west1.firebasedatabase.app/").reference.child("pdfs/$userId")
 
+        // Set the "None" RadioButton as checked by default
+        binding.radioButtonNone.isChecked = true
+
     }
 
     private fun initClickListeners() {
@@ -70,12 +74,17 @@ class ScanFragment : Fragment() {
         val fileName = binding.fileName.text.toString()
         val mStorageRef = storageReference.child("${System.currentTimeMillis()}/$fileName")
 
+        // Get the selected category from the RadioGroup
+        val selectedCategoryId = binding.categoryRadioGroup.checkedRadioButtonId
+        val selectedCategoryButton = binding.root.findViewById<RadioButton>(selectedCategoryId)
+        val selectedCategory = selectedCategoryButton.text.toString()
+
         pdfFileUri?.let { uri ->
             mStorageRef.putFile(uri).addOnSuccessListener {
 
                 mStorageRef.downloadUrl.addOnSuccessListener { downloadUri ->
                     Log.i("ScanFragment", downloadUri.toString())
-                    val pdfFile = PdfFile(fileName, downloadUri.toString())
+                    val pdfFile = PdfFile(fileName, downloadUri.toString(), selectedCategory)
                     databaseReference.push().key?.let { pushKey ->
                         databaseReference.child(pushKey).setValue(pdfFile)
                             .addOnSuccessListener {
