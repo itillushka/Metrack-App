@@ -1,6 +1,5 @@
 package com.example.metrack
 
-import android.content.Intent
 import android.net.Uri
 import android.os.Bundle
 import android.util.Log
@@ -12,10 +11,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.documentfile.provider.DocumentFile
 import androidx.fragment.app.Fragment
 import com.example.metrack.databinding.FragmentScanBinding
-import com.google.firebase.Firebase
+import com.google.firebase.auth.FirebaseAuth
 import com.google.firebase.database.DatabaseReference
 import com.google.firebase.database.FirebaseDatabase
-import com.google.firebase.database.database
 import com.google.firebase.storage.FirebaseStorage
 import com.google.firebase.storage.StorageReference
 
@@ -41,8 +39,9 @@ class ScanFragment : Fragment() {
         binding = FragmentScanBinding.inflate(layoutInflater)
 
 
-        storageReference = FirebaseStorage.getInstance().reference.child("pdfs")
-        databaseReference = FirebaseDatabase.getInstance("https://metrack-app-d3ffd-default-rtdb.europe-west1.firebasedatabase.app/").reference.child("pdfs")
+        val userId = FirebaseAuth.getInstance().currentUser?.uid
+        storageReference = FirebaseStorage.getInstance().reference.child("pdfs/$userId")
+        databaseReference = FirebaseDatabase.getInstance("https://metrack-app-d3ffd-default-rtdb.europe-west1.firebasedatabase.app/").reference.child("pdfs/$userId")
 
     }
 
@@ -57,12 +56,7 @@ class ScanFragment : Fragment() {
                 Toast.makeText(requireContext(), "Please select pdf first", Toast.LENGTH_SHORT).show()
             }
         }
-        binding.showAllBtn.setOnClickListener {
-        val transaction = requireActivity().supportFragmentManager.beginTransaction()
-        transaction.replace(R.id.ScanFrame, LibraryFragment())
-        transaction.addToBackStack(null)
-        transaction.commit()
-}
+
     }
 
     private val launcher = registerForActivityResult(ActivityResultContracts.GetContent()) { uri ->
