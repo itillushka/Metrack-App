@@ -34,6 +34,11 @@ class LibraryFragment : Fragment(), LibraryAdapter.PdfClickListener {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
+        val buttonText = arguments?.getString("buttonText")
+
+        val searchView = binding.searchView
+        searchView.setQuery(buttonText, true)
+
         val userId = FirebaseAuth.getInstance().currentUser?.uid
         databaseReference = FirebaseDatabase.getInstance("https://metrack-app-d3ffd-default-rtdb.europe-west1.firebasedatabase.app/").reference.child("pdfs/$userId")
         initRecyclerView()

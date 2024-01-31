@@ -10,21 +10,22 @@ class MeTrackApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+        val LICENSE_KEY =
+                "P6I04uUrEf7sM2QwB1yOwe0tNupchH" +
+                "ksqIHG20xFI/0+pg7i7mUWu7ONNjgz" +
+                "RuvIr+RaFNjW8IIDp7YX+7SPukvXn3" +
+                "q2UWclvrph3EkIQ/4lWdl6xXsCJiEj" +
+                "WfEnSl7WIo5fwFHew2JBqg7kRHc3sm" +
+                "HekWu8+mbxj8f5fnGnfGtNhQMGmW1A" +
+                "g/FbYWKSx7HBDRSOTJtOroPi+8BHsi" +
+                "Liy9SV+BagdP0w+xbYbNLdJ1spDfjf" +
+                "nqfi9Gf1vfCW8/prqRt4YJPqCCfUxC" +
+                "5E2MwzIwERNU+2mqwYNn0dKiD+p90q" +
+                "+bkJof2qERBuCKgwY77Z4TAGSQE71y" +
+                "1bSgoaKbdZtQ==\nU2NhbmJvdFNESw" +
+                "pjb20uZXhhbXBsZS5tZXRyYWNrCjE3" +
+                "MDgzODcxOTkKNTkwCjI=\n";
 
-        val LICENSE_KEY = "P/zFTbxw8gEM0uFpxT4btOm1VdYwSq\"\n" +
-                "\"BBUjIp6Pw5w2OrigOgViOWU3ZMvCOO\"\n" +
-                "\"jfmEVVfUy2+PIOMXa2kvu4R25YH3H+\"\n" +
-                "\"QKakHrxX+aaDyWi851QYXNvrJODufo\"\n" +
-                "\"jwJ6Rh488iniNGoK0/3EljPGEwoTH6\"\n" +
-                "\"bjcYCbbDqdGdJa7QIinMYIFM0PlfTv\"\n" +
-                "\"NhGFFEZLYonXpEAwIb0Ogb2oYed3vL\"\n" +
-                "\"jUsjMuM7RgraJyNmRiBInRyz8kLCmh\"\n" +
-                "\"8SSR5jTQSUVEUvOg/jaqhf/1U8OR/F\"\n" +
-                "\"5utlkiY3HHD+VZn8Fa/jMDtCYvCq7D\"\n" +
-                "\"Ht6AXeb8K3qMbyjIFCtZR+8EWzEbfI\"\n" +
-                "\"k5aHxJLJXZnw==\\nU2NhbmJvdFNESw\"\n" +
-                "\"pjb20uZXhhbXBsZS5tZXRyYWNrCjE3\"\n" +
-                "\"MDgzODcxOTkKNTkwCjE=\\n"
         ScanbotSDKInitializer()
             .license(this, LICENSE_KEY) // see below
             .licenceErrorHandler(IScanbotSDKLicenseErrorHandler { status, feature, message ->
