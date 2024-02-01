@@ -1,6 +1,3 @@
-<<<<<<< HEAD
-# Metrack-App
-=======
 # Metrack
 
 Metrack is a user-friendly application designed to help users track their medical documents. It provides a simple and efficient way to manage and organize important prescriptions, active prescriptions, pending prescriptions, and expired prescriptions or anything else.
@@ -36,4 +33,3 @@ Metrack is a user-friendly application designed to help users track their medica
 ## Author
 
 it.illushka
->>>>>>> develop
