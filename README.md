@@ -11,10 +11,10 @@ First activities demonstration and navigation drawer although
 
 After login or registration(which is also way to log in) there are 4 activities
 <p float="left">
-  <img src="./images/main.jpg" width="25%" />
-  <img src="./images/library.jpg" width="25%" />
-  <img src="./images/scan.jpg" width="25%" />
-  <img src="./images/drugs.jpg" width="25%" />
+  <img src="./images/main.jpg" width="20%" />
+  <img src="./images/library.jpg" width="20%" />
+  <img src="./images/scan.jpg" width="20%" />
+  <img src="./images/drugs.jpg" width="20%" />
 </p>
 ## Features
 
