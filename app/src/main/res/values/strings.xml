@@ -1,0 +1,17 @@
+<resources>
+    <string name="app_name">Metrack</string>
+    <string name="register">Register</string>
+    <string name="don_t_have_an_account">Don`t have an account?</string>
+    <string name="password">password</string>
+    <string name="email">email</string>
+    <string name="login">Login</string>
+    <string name="default_web_client_id">329980987626-4doj2q7pr7t3gjs5bmfpe65bkplbc37r.apps.googleusercontent.com</string>
+    <string name="service_history">Service History</string>
+    <string name="payments">Payments</string>
+    <string name="support">Support</string>
+    <string name="open">Open</string>
+    <string name="close">Close</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="no_pdf_file_selected_yet">No PDF File Selected yet !</string>
+</resources>
