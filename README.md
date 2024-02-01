@@ -2,7 +2,7 @@
 
 Metrack is a user-friendly application designed to help users track their medical documents. It provides a simple and efficient way to manage and organize important prescriptions, active prescriptions, pending prescriptions, and expired prescriptions or anything else.
 
-<p float="left">
+<p float="center">
   <img src="./images/login.jpg" width="30%" />
   <img src="./images/register.jpg" width="30%" />
   <img src="./images/nav.jpg" width="30%" />
@@ -10,7 +10,7 @@ Metrack is a user-friendly application designed to help users track their medica
 First activities demonstration and navigation drawer although
 
 After login or registration(which is also way to log in) there are 4 activities
-<p float="left">
+<p float="center">
   <img src="./images/main.jpg" width="20%" />
   <img src="./images/library.jpg" width="20%" />
   <img src="./images/scan.jpg" width="20%" />
