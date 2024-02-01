@@ -2,20 +2,23 @@
 
 Metrack is a user-friendly application designed to help users track their medical documents. It provides a simple and efficient way to manage and organize important prescriptions, active prescriptions, pending prescriptions, and expired prescriptions or anything else.
 
-<p float="center">
+<p align="center">
   <img src="./images/login.jpg" width="30%" />
   <img src="./images/register.jpg" width="30%" />
   <img src="./images/nav.jpg" width="30%" />
 </p>
 First activities demonstration and navigation drawer although
 
-After login or registration(which is also way to log in) there are 4 activities
-<p float="center">
+
+<p align="center">
   <img src="./images/main.jpg" width="20%" />
   <img src="./images/library.jpg" width="20%" />
   <img src="./images/scan.jpg" width="20%" />
   <img src="./images/drugs.jpg" width="20%" />
 </p>
+
+After login or registration(which is also way to log in) there are 4 activities
+
 ## Features
 
 - **Document Scanning**: Metrack allows users to scan their medical documents directly from the app. The scanned documents are then converted into PDF format for easy storage and retrieval. Users can input a name for the scanned document before scanning it, and if no name is provided, the document will be stored under the name "NoFileName".
