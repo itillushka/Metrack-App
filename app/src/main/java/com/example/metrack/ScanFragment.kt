@@ -97,31 +97,49 @@ class ScanFragment : Fragment() {
         }
     }
 
-    private fun uploadScannedPdfToFirebase(pdfFile: File) {
-    val pdfUri = Uri.fromFile(pdfFile)
-    val fileName = pdfFile.name
-    val storageRef = storageReference.child("${System.currentTimeMillis()}/$fileName")
+   private fun uploadScannedPdfToFirebase(pdfFile: File) {
+       val pdfUri = Uri.fromFile(pdfFile)
+       var fileName =
+           binding.editTextFileName.text.toString() // Get the file name from the EditText
+       // Check if the EditText is empty
+       if (fileName.isEmpty()) {
+           fileName = "NoFileName" // Use "NoFileName" as the file name
+       }
+       val storageRef = storageReference.child("${System.currentTimeMillis()}/$fileName")
 
-    storageRef.putFile(pdfUri)
-        .addOnSuccessListener {
-            storageRef.downloadUrl.addOnSuccessListener { downloadUri ->
-                Log.i("ScanFragment", downloadUri.toString())
-                val pdfFile = PdfFile(fileName, downloadUri.toString(), "Scanned Document")
-                databaseReference.push().key?.let { pushKey ->
-                    databaseReference.child(pushKey).setValue(pdfFile)
-                        .addOnSuccessListener {
-                            Toast.makeText(requireContext(), "Scanned PDF uploaded and stored successfully", Toast.LENGTH_SHORT).show()
-                        }
-                        .addOnFailureListener { exception ->
-                            Toast.makeText(requireContext(), "Failed to store scanned PDF: ${exception.message}", Toast.LENGTH_SHORT).show()
-                        }
-                }
-            }
-        }
-        .addOnFailureListener { exception ->
-            Toast.makeText(requireContext(), "Failed to upload scanned PDF: ${exception.message}", Toast.LENGTH_SHORT).show()
-        }
-}
+       storageRef.putFile(pdfUri)
+           .addOnSuccessListener {
+               storageRef.downloadUrl.addOnSuccessListener { downloadUri ->
+                   Log.i("ScanFragment", downloadUri.toString())
+                   val pdfFile = PdfFile(fileName, downloadUri.toString(), "Scanned Document")
+                   databaseReference.push().key?.let { pushKey ->
+                       databaseReference.child(pushKey).setValue(pdfFile)
+                           .addOnSuccessListener {
+                               binding.editTextFileName.text.clear()
+                               Toast.makeText(
+                                   requireContext(),
+                                   "Scanned PDF uploaded and stored successfully",
+                                   Toast.LENGTH_SHORT
+                               ).show()
+                           }
+                           .addOnFailureListener { exception ->
+                               Toast.makeText(
+                                   requireContext(),
+                                   "Failed to store scanned PDF: ${exception.message}",
+                                   Toast.LENGTH_SHORT
+                               ).show()
+                           }
+                   }
+               }
+           }
+           .addOnFailureListener { exception ->
+               Toast.makeText(
+                   requireContext(),
+                   "Failed to upload scanned PDF: ${exception.message}",
+                   Toast.LENGTH_SHORT
+               ).show()
+           }
+   }
 
     private fun initClickListeners() {
         binding.selectPdfButton.setOnClickListener {
